@@ -1,0 +1,1032 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath, amssymb, amsthm, amsfonts}
+%\usepackage{leftidx} % for sup/sub indices on the left
+\usepackage[all]{xy}
+\usepackage{todonotes}
+
+
+%opening
+\title{Lectures on Enright-Shelton equivalences}
+\author{VT}
+
+\begin{document}
+
+\newcommand{\lie}[1]{\mathfrak{#1}}
+\newcommand{\roots}{\Delta}
+\newcommand{\Hom}{\mathrm{Hom}}
+\newcommand{\Ext}{\mathrm{Ext}}
+\newcommand{\killing}[2]{\langle #1, #2 \rangle}
+\newcommand{\et}{\,\&\,}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{example}[theorem]{Example}
+
+
+\maketitle
+
+\section{Introduction (Pavle 22.5.)}
+
+\subsection{Basic setting}
+\begin{itemize}
+ \item $\lie{g}$ a complex semi-simple Lie algebra
+ \item $\lie{b} = \lie{h} \oplus \lie{u}$ its Borel subalgebra corresponding to a system of positive roots $\roots^+ \subset \roots = \roots(\lie{g}, \lie{h})$ ($\alpha \in \roots^+ \leftrightarrow \lie{g}_\alpha \subset \lie{u}\subset\lie{b}$)
+ \item $\lie{p} = \lie{l}_\lie{p} \oplus \lie{u}_\lie{p} = \lie{l} \oplus \lie{u}$ parabolic subalgebra containing $\lie{b}$ 
+ \item $W$ the Weyl group of $\lie{g}$, $W_\lie{l}$ the Weyl group of $\lie{l}$
+ \item the minimal coset representatives $W^\lie{l} = \left\{ w \in W \middle| w\roots^+ \supset \roots^+_\lie{l} = \roots^+ \cap \roots(\lie{l}, \lie{h}) \right\}$ and ${}^\lie{l} W = (W^\lie{l})^{-1}$ (we have $W = W_\lie{l}W^\lie{l} = {}^\lie{l}WW_\lie{l}$)
+\end{itemize}
+
+The Enright-Shelton equivalences are functors between certain subcategories of categories $\mathcal{O}$. 
+\begin{definition}
+The category $\mathcal{O}(\lie{g},\lie{p})$ is the full subcategory of $\lie{g}$-modules whose objects $X$ satisfy:
+\begin{enumerate}
+ \item $X$ is finitely generated over $\lie{U(g)}$
+ \item $X$ is $\lie{U(p)}$-locally finite ($\forall x\in X \colon \dim \lie{U(p)} x < +\infty$)
+ \item $X$ is completely reducible over $\lie{U(l)}$
+\end{enumerate}
+\end{definition}
+
+By Dixmier version of Schur's lemma, any element of the center $Z(\lie{U(g)})$ of $\lie{U(g)}$ acts on any irreducible module by a scalar multiple of identity. In particular, $z \in Z(U(\lie{g}))$ acts on a simple highest weight module of weight $\lambda$ by $\chi_\lambda(z)$. So for a fixed $\lambda \in \lie{h}^*$ we have a homomorphism $\chi_\lambda \colon Z(\lie{U(g)}) \to \mathbb{C}.$ We will call this homomorphism \emph{infinitesimal (or central) character} associated with $\lambda$ and sometimes we will abuse notation and write the infinitesimal character just as $\lambda$ instead of $\chi_\lambda.$ 
+
+For two infinitesimal characters $\chi_\lambda = \chi_\mu$  if and only if $\lambda = W\cdot \mu$ where $w\cdot \lambda = w(\lambda + \rho) - \rho$ is the so called \emph{affine action} of the Weyl group $W$.
+
+Verma module $M(\lambda):=\lie{U(g) \otimes_{U(b)}} \mathbb{C}_{\lambda-\rho}$ with highest weight $\lambda - \rho$ has infinitesimal character $\lambda$.
+
+A module $X$ has \emph{generalized infinitesimal character} $\lambda$ if 
+\[
+\forall x \in X\, \exists n \in \mathbb{N} \colon (z - \chi_\lambda(z))^n x = 0.
+\]
+
+Each module in $X \in \mathcal{O}(\lie{g}, \lie{p})$ splits as a finite direct sum of summands with different generalized infinitesimal characters.
+ 
+ \[
+X = \bigoplus_{\lambda \in \lie{h}^\ast / W} X_{[\lambda]}
+ \]
+
+ So it is OK to fix $\lambda$ and consider only the subcategory $\mathcal{O}(\lie{g}, \lie{p}, \lambda)$, consisting of modules with generalized infinitesimal character $\lambda$. These subcategories are often called \emph{blocks}.
+
+\begin{definition}
+ \emph{Generalized Verma module} is defined as
+ \[
+ N(\lie{g},\lie{p},\lambda) = N(\lambda) := \lie{U(g)\otimes_{U(p)}}   F(\lie{l},\lambda - \rho) \cong \lie{U(u^-)}\otimes_\mathbb{C}   F(\lie{l},\lambda - \rho),
+ \]
+ where $F(\lie{l},\mu)$ is the finite-dimensional $\lie{l}$-module with highest weight $\mu$.
+\end{definition}
+
+\begin{example}
+$N(\lie{g},\lie{p},\lambda)$ has infinitesimal character $\lambda.$
+\end{example}
+
+By $ L(\lambda)$ we denote the unique irreducible quotient of $N(\lambda)$ and each such module has a unique indecomposable projective cover $P(\lambda)$
+%TODO D1
+\missingfigure{Diagram of universal property of projective cover.}
+All irreducible modules in $\mathcal{O}(\lie{g},\lie{p})$ are given by $L(\lambda)$ where $\lambda$ is $\lie{l}$-dominant, $\lie{l}$-regular and $\lie{l}$-integral.
+
+Set
+\[
+ P_\lie{l} := \{ \lambda \in \lie{h}^\ast \colon \roots\text{-integral}, \roots^+_\lie{l}\text{-dominant and regular} \}.
+\]%TODO check
+
+We say that $X \in \mathcal{O}(\lie{g}, \lie{p})$ has a \emph{Verma flag} if there is filtration
+\[
+ 0 = X_{n+1} \leq X_n \leq \cdots X_1 \leq X_0 = X
+\]
+such that $\forall i\, X_i / X_{i+1} = N(\lambda_i)$ for some $\lambda_i \in \lie{h}^*$. Such a flag is not unique, but multiplicity of each $N(\lambda_i)$ is well defined, and denoted by $[X \colon N(\lambda_i)]$.
+
+\begin{theorem}[BGG reciprocity]
+Each projective cover $P(\lambda)$ has a Verma flag and
+ \[
+  [P(\lambda) : N(\mu) ] = (N(\mu) : L(\lambda)).
+ \]
+ The right-hand side is the usual Jordan-H\"{o}lder multiplicity.
+\end{theorem}
+
+
+\begin{example}[$\lie{sl}_2$]
+ There are 5 types of indecomposable modules in $\mathcal{O}(\lie{sl}_2, \lie{b})$. For $\lambda > 0$:
+ \begin{enumerate}
+  \item $M(\lambda)$  Verma module of highest weight $\lambda - 1$ which has $F(\lambda -1)$ as quotient
+  \item $F(\lambda -1)$
+  \item $M(-\lambda)$ irreducible Verma module
+  \item $V(\lambda)$ dual Verma module -- same weights as $M(\lambda)$ but $F(\lambda-1)$ is a submodule, $M(-\lambda)$ quotient
+  \item $P(-\lambda)$ has generalized infinitesimal character but doesn't have infinitesimal character \\
+ \end{enumerate}
+ %TODO D2 and D3
+ \missingfigure{Add weight diagrams of $M(\lambda)$ and $P(\lambda)$.}
+$P(\lambda) = M(\lambda)$ (already projective)\\
+$P(-\lambda) \twoheadrightarrow M(-\lambda)$ proj. cover \\
+$L(-\lambda) = M(-\lambda)$ \\
+$L(\lambda) = F(\lambda-1)$\\
+
+BGG reciprocity: $[P(-\lambda) : M(-\lambda)] = [M(-\lambda] : L(-\lambda)]$
+
+There is only one singular parameter $\lambda = 0$ for which $M(0) = L(0) = P(0)$.
+\end{example}
+
+\begin{example}[ES equivalence]
+ Consider $\lie{g} = \lie{gl}(p+q)$ with parabolic subalgebra which has as Levi factor $\lie{l} = \lie{sl}(p)\oplus \lie{sl}(q) \oplus \mathbb{C}$. 
+ 
+ E.g. for $p=7, q=5$ and parameter $\lambda = (8,7,7,6,5,4,4,|3,2,2,1,0)$ we have equivalences to parameters $(8,7,6,5,4,3,2 | 7,4,2,1,0)$ and finally to  $(8,6,5,3 | 1, 0)$ which is regular for $\lie{gl}(4+2).$
+ 
+ \begin{gather*}
+  (8,\pmb{7},\pmb{7},6,5,\pmb{4},\pmb{4},|3,\pmb{2},\pmb{2},1,0) \\
+  \sim \\
+  (8,\pmb{7},6,5,\pmb{4},3,2 | \pmb{7},\pmb{4},\pmb{2},1,0) \\
+  \sim \\
+  (8,6,5,3 | 1, 0)
+ \end{gather*}
+
+\end{example}
+
+For $\lambda,\mu \in \lie{h}^\ast$ we write $\mu \leq \lambda$ if $\lambda - \mu$ is a linear combination of positive roots, with positive coefficients.
+
+\begin{definition}[Bruhat order]
+For $w_1, w_2 \in W$ we define $w_1 \prec w_2$ if there exists reduced expression for $w_2$ containing some reduced expression for $w_1$ as a subsequence. We define another order on $\lie{h}^*$ by $ \mu \prec  \lambda$  if $\Hom_\lie{g}(M(\mu), M(\lambda)) \neq 0$ (such a homomorphism is then unique up to scalar, and injective).
+\end{definition}
+%
+\begin{example}
+$  s_1s_2s_3 \prec s_4s_2 \pmb{s_1s_2s_3} s_2.$
+ % original RHS "s_4s_5s_2 \pmb{s_1s_2s_3} s_5s_2 " was not reduced.
+ \end{example}
+%
+\begin{lemma}
+\begin{enumerate}
+\item Suppose $\lambda, \mu \in \lie{h}^\ast$. Then $\mu \prec \lambda$ if and only if there exist $\alpha_i \in \Delta^+$, $i=1,\ldots,t$, such that for $\lambda_i := s_{\alpha_i} \ldots s_{\alpha_1} \lambda$, $i=1,\ldots,t$, the following holds:
+%
+\[ \mu = \lambda_t \leq \lambda_{t-1} \leq \ldots \leq \lambda_1 \leq \lambda_0 := \lambda. \]
+%
+Equivalently, $\mu = \lambda_t$ and $\killing{\alpha_{i}}{\lambda_{i-1}}>0$ for $i=1,\ldots,t$.
+
+Moreover, if $\lambda, \mu \in P_\lie{l}$, then one can assume that all $\lambda_i$ in $P_\lie{l}$.
+
+\item Suppose now $\lambda \in \lie{h}^\ast$ is regular and anti-dominant, and $w_1,w_2 \in W$. Then
+%
+\[ w_1 \prec w_2 \text{ in $W$} \quad \Leftrightarrow \quad w_1 \lambda \prec w_2 \lambda \text{ in $\lie{h}^\ast$}.\]
+\end{enumerate}
+\end{lemma}
+%
+\begin{proof}
+See \cite[Chapters 4. and 5.]{hum}.
+\end{proof}
+
+
+\subsection{Truncated categories}
+
+
+\begin{definition}
+ For $\mu \in P_\lie{l}$ define the truncated category $\mathcal{O}_t(\mu)$ as the full subcategory of $\mathcal{O}(\mu)$ consisting of objects $X$ such that
+ \[
+  [X : L(\nu)] \neq 0 \Longrightarrow \nu \prec \mu.
+ \]
+
+Given $A \in \mathcal{O}(\mu)$ there exists unique minimal $B \subseteq A$ such that $A/B \in \mathcal{O}_t(\mu)$. This allows us to define a covariant functor
+\begin{gather*}
+ T_\mu\colon \mathcal{O}(\mu) \to \mathcal{O}_t(\mu), \\
+ T_\mu (A) = A / B.
+\end{gather*}
+\end{definition}
+
+The truncated category has similar properties as $\mathcal{O}(\mu)$: projective covers, BGG reciprocity, etc.
+%
+\begin{lemma}
+\label{lemma:truncated_category}
+Let $\mu, \nu$ be in $P_\lie{l}$.
+\begin{enumerate}
+\item If $\nu \prec \mu$ then $N(\nu)$ is in $\mathcal{O}_t(\mu).$
+
+\item $T_\mu$ is covariant right exact functor from $\mathcal{O}(\mu)$ to $\mathcal{O}_t(\mu).$
+
+\item If $\nu \not\prec \mu$, then $T_\mu P(\nu) =0$.
+
+\item If $\nu \prec \mu$, then $T_\mu P(\nu)$ is the unique indecomposable projective cover of $L(\nu)$ in $\mathcal{O}_t(\mu)$.
+
+\item
+\label{item:truncated_category_reciprocity} If $\nu \prec \mu$, then $T_\mu P(\nu)$ has a Verma flag, and the following reciprocity formula holds:
+%
+\[ [T_\mu P(\nu)\colon N(\xi) ]= \begin{cases} (N(\xi) \colon L(\nu)) & \colon \text{if $\xi \in P_\lie{l}$ and $\xi \prec \mu$}
+\\ 0 & \colon \text{otherwise}.\end{cases} \]
+%
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+See \cite[\S2.]{es}.
+\end{proof}
+
+
+
+
+\subsection{Translation functors}
+
+Translation functors are certain functors between different blocks of $\mathcal{O}(\lie{g,p})$.
+Let $\lambda, \mu \in \lie{h}^\ast$ with $\lambda$ integral. Let $F$ be the finite-dimensional $\lie{g}$-module with extreme weight $\lambda$ (i.e. $\lambda$ is a $W$-conjugate of the highest weight of $F$), and $F^\ast$ its contragredient module. For $X \in \mathcal{O}(\lie{g,p})$ we set
+%
+\begin{align*}
+& \phi_{\mu}^{\mu + \lambda} (X) :=  (X_{[\mu]} \otimes F)_{[\mu + \lambda]}, \\
+& \psi^{\mu}_{\mu + \lambda} (X) :=  (X_{[\mu+\lambda]} \otimes F^\ast)_{[\mu]}.
+\end{align*}
+%
+These functors are adjoints of each other, exact, and preserve projectives. Moreover, they commute with truncations in the following case:
+%
+\begin{lemma}
+\label{lemma:translation_truncation}
+Suppose $\lambda,\xi$ are integral and dominant, and fix $w \in W$ for which the following condition holds:
+%
+\[ \alpha \in \Delta^+, \ \killing{\xi}{\alpha}=0 \ \Rightarrow \ w \alpha >0. \]
+%
+Put $\mu=w \xi$ and $\nu=w\lambda$. The following diagrams are commutative:
+%
+\[ \xymatrix{\mathcal{O}(\xi) \ar[r]^{\phi^{\xi+\lambda}_{\xi}} \ar[d]_{T_\mu} & \mathcal{O}(\xi +\lambda) \ar[d]^{T_{\mu+\nu}} \\
+\mathcal{O}_t(\mu) \ar[r]_{\phi^{\xi+\lambda}_{\xi}} & \mathcal{O}(\mu +\nu)} \qquad \xymatrix{\mathcal{O}(\xi)  \ar[d]_{T_\mu} & \mathcal{O}(\xi +\lambda) \ar[d]^{T_{\mu+\nu}} \ar[l]_{\psi_{\xi+\lambda}^{\xi}} \\
+\mathcal{O}_t(\mu) & \mathcal{O}(\mu +\nu) \ar[l]^{\psi_{\xi+\lambda}^{\xi}} . } \]
+%
+\end{lemma}
+\begin{proof}
+See \cite[\S3.]{es}.
+\end{proof}
+
+\subsection{Zuckerman functors}
+
+\begin{definition}
+ Consider $\lie{a} \supset \lie{k}$ a pair of Lie algebras and categories 
+ \begin{enumerate}
+  \item $C(\lie{a}, \lie{k})$ $\lie{a}$-modules which are locally finite and completely reducible for $\lie{U(k)}$
+  \item $A(\lie{a}, \lie{k})$ admissible elements of $C(\lie{a}, \lie{k})$, meaning finitely generated over $\lie{U(a)}$ and with finite $\lie{k}$-multiplicities
+  \end{enumerate}
+Fix $\lie{m}$ between $\lie{a}$ and $\lie{k}$, i.e. $\lie{k} \subset \lie{m} \subset \lie{a}$ and define 
+\begin{gather*}
+ \Gamma_\lie{a} = \Gamma_{\lie{a,m,k}} \colon C(\lie{a}, \lie{k}) \to C(\lie{a}, \lie{m}) \\
+ \Gamma_\lie{a} X = \text{span of all simple finite dimensional $\lie{m}$-submodules of $X$} 
+\end{gather*}
+\end{definition}
+
+The functor $\Gamma_\lie{a}$ is right adjoint to forgetfull functor and is left exact. Its right derived functors are denoted by $\Gamma^i_\lie{a}.$
+%TOOO add properties of this functor
+
+% Consider another standard parabolic subalgebra $\lie{q} \subset \lie{p}$. Then $\lie{l}_\lie{p} \cap \lie{q}$ is a parabolic subalgebra of $\lie{l}_\lie{p}$
+
+Let $\lie{q}$ be a standard maximal parabolic that doesn't contain $\lie{p}$. Define $L$  to be the one-dimensional $\lie{q}$-module with highest weight $-\rho(\lie{u}_\lie{q})$. As usual, for $X$ irreducible $\lie{l}_\lie{q}$-module we extend the action to whole $\lie{q}$ by letting $\lie{u}_\lie{q}$ act by zero. The $\lie{g}$-module
+\[
+ U(X) = \lie{U(g)\otimes_{U(q)}} (X\otimes L)
+\]
+is not $\lie{l}_\lie{p}$-finite. Let $\tau(X)$ be the $\lie{l}_\lie{p}$-finite part of $\Gamma^d_\lie{g} (U(X))$ where
+\[
+d  = \dim \lie{l}_\lie{p}/ \lie{l}_\lie{p}\cap\lie{l}_\lie{q}. 
+\]
+(So $\Gamma_{\lie{g}, \lie{l}_\lie{p}, \lie{l}_\lie{p} \cap \lie{l}_\lie{q}}$?)
+
+
+\begin{theorem}[ES1]
+\label{thm:es1}
+The functor
+ \[
+  \tau \colon \mathcal{O}_t (\lie{l}_\lie{q}, \lie{l}_\lie{q} \cap \lie{p}, \lambda) \to \mathcal{O}(\lie{g}, \lie{p}, \lambda)
+ \]
+is equivalence of categories witch explicit inverse. Assuming sets of parameters match...
+\end{theorem}
+
+\begin{theorem}[ES2]
+\label{thm:es2}
+ \[
+  \mathcal{O} (\lie{l}_\lie{p}, \lie{l}_\lie{p} \cap \lie{q}, -w_1 \rho) \to \mathcal{O}_t (\lie{g}, \lie{p} \cap \lie{q}, -w_1 \rho) \to  \mathcal{O}_t (\lie{g}, \lie{p}, -w_0w_1 \rho)
+ \]
+ where the first functor is $U$ and the second one is $\Gamma^s_{\lie{g}, \lie{l}_\lie{p}, \lie{l}_\lie{p} \cap \lie{l}_\lie{q}}$ for 
+ \[
+s = \frac{1}{2} \dim \lie{l}_\lie{p} /   \lie{l}_\lie{p} \cap \lie{l}_\lie{q}
+ \]
+ and $w_1$ is the longest element of $W_{\lie{l}_\lie{p}}$ and $w_0$ is the longest element of $W_{  \lie{l}_\lie{p} \cap \lie{l}_\lie{q}}.$
+
+\end{theorem}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{An equivalence of categories (Rafael 29.5.)}
+
+This is Section \S 6. in \cite{es}, where Theorem \ref{thm:es1} is proved. Here we will use a slightly different notation:
+\begin{itemize}
+\item $\lie{p} =  \lie{m} \oplus \lie{u} \subseteq \lie{g}$, a parabolic subalgebra.
+
+\item $\lie{q} =  \lie{l} \oplus \lie{u}_\lie{q} \subseteq \lie{g}$, a maximal parabolic subalgebra, which doesn't contain $\lie{p}$. We assume that $\lie{h} \subseteq \lie{b} \subseteq \lie{p} \cap \lie{q}$. The center of $\lie{l}$, which is  $1$-dimensional, will be denoted by $\lie{c}$.
+
+\item $\lie{r}:=\lie{m} \cap \lie{l}$, $d=\dim \lie{m}/\lie{r}$.
+
+\item $\lambda \in \lie{h}^\ast$ $\Delta$-integral and $\Delta(\lie{l})$-regular weight.
+
+\item $\mathcal{O}_\lie{g} := \mathcal{O}(\lie{g},\lie{p},\lambda)$.
+
+\item $\mathcal{O}_\lie{l} := \mathcal{O}_t(\lie{l},\lie{l\cap p},\lambda)$ (note the truncation here.)
+
+\end{itemize}
+
+We assume the sets of parameters of $\mathcal{O}_\lie{g}$ and $\mathcal{O}_\lie{l}$ match, in the following sense:
+%
+\[
+\{ \text{highest weights of $\mathcal{O}_\lie{g}$} \ + \rho \} = \{ \text{highest weights of $\mathcal{O}_\lie{l}$} \ + \rho(\lie{l}) \} =: \Theta. 
+\]
+
+Define $L = \mathbb{C}l$ the $1$-dimensional $\lie{q}$-module with weight $-\rho(\lie{u}_{\lie{q}})$, and its dual by $L^\ast = \mathbb{C}l^\ast$. (Note that $L \cong \bigwedge^\text{top} \lie{u}_\lie{q}^-$ and $L^\ast \cong \bigwedge^\text{top} \lie{u}_\lie{q}$.) Each $\lie{l}$-module can be regarded as a $\lie{q}$-module by defining that $\lie{u}_\lie{q}$ acts by $0$. So, for an $\lie{l}$-module $X$, we define
+%
+\[ U(X) := \lie{U(g)\otimes_{U(q)}} X \otimes L. \]
+
+The functor $U \colon \mathcal{O}(\lie{l},\lie{l \cap p}) \to C(\lie{g},\lie{r})$ is well defined and exact.
+
+Recall the Zuckerman functor $\Gamma$ associated to the triple $\lie{r \subseteq m \subseteq g}$,
+%
+\begin{gather*}
+\Gamma \colon C(\lie{g,r}) \to  C(\lie{g,m})  \\
+\Gamma X := \text{span of all simple finite dimensional $\lie{m}$-submodules of $X$}.
+\end{gather*}
+
+For $X \in \mathcal{O}(\lie{l,l\cap p})$ we define
+%
+\[ \tau X := \Gamma^d U(X).\]
+
+The following properties of Zuckerman functors will be used:
+
+\begin{proposition}
+\label{proposition:Zuckerman_properties}
+\begin{enumerate}
+\item \label{item:vanishing_above_d} For $i>d$, $\Gamma^i =0$.
+
+\item \label{item:F_Gamma} For finite dimensional $\lie{g}$-module $F$, $\Gamma^i(F \otimes X) \cong F \otimes \Gamma^i X$ for $X \in C(\lie{g,r})$.
+
+\item \label{item:easy_duality} For $i \in \mathbb{N}$, $\Gamma^i X \cong \Gamma^{d-i}(X^\sim)^\approx$, where $Y^\sim$ (resp. $Y^\approx$) denotes the set of $\lie{U(r)}-$(resp. $\lie{U(m)}-$)locally finite vectors in the algebraic dual of $Y$.
+
+\item \label{item:restriction_p-} $\Gamma^i$ commutes with the forgetful functor $C(\lie{g,r}) \to C(\lie{p^-,r})$.
+
+\item \label{item:Zuckerman_Vermas} For $\nu \in P_\lie{m}$ and $w \in W_\lie{m}$ such that $w \nu \in P_\lie{r}$, and $i \in \mathbb{N}$ we have
+%
+\[ \Gamma^i N(\lie{g,p\cap q},w\nu) \cong \begin{cases} N(\lie{g,p},\nu) &\colon i=d-l(w)  \\ 0 &\colon \text{otherwise}. \end{cases} \]
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+See \cite[\S5.]{es} and \cite{ew}. This should also be proved in \cite{kv} in some form.
+\end{proof}
+
+\begin{lemma}
+\label{lemma:max_quotient}
+For $X$ in $\mathcal{O}(\lie{l,l\cap p})$, $\tau X$ is the unique maximal $\lie{U(m)}$-locally finite and $\lie{U(m)}$-completely reducible quotient of $U(X)$. We have a natural surjection $p_X \colon U(X) \twoheadrightarrow \tau X$.
+\end{lemma}
+
+\begin{proof}
+Let $A$ be a $\lie{U(m)}$-locally finite and $\lie{U(m)}$-completely reducible quotient of $U(X)=:Y$. Dualizing the exact sequence $Y \stackrel{f}{\twoheadrightarrow} A \to 0$, and using the definition of $\Gamma$, we have
+%
+\[ \xymatrix{
+0 \ar[r] & A^\sim \ar@{^{(}->}[rr]^{f^\sim} \ar@{^{(}->}[rd]^{h} & & Y^\sim \\
+  &  & \Gamma(Y^\sim) \ar@{^{(}->}[ru]^{i} .}
+\]
+
+Dualizing again, and using Proposition \ref{proposition:Zuckerman_properties}(\ref{item:easy_duality}), we have
+%
+\[ \xymatrix{
+Y \ar@{->>}[rr]^{f} \ar@{->>}[rd]^{i^\sim} & & A \ar[r] & 0\\
+& \Gamma(Y^\sim)^\sim \ar@{->>}[ru]^{h^\sim} \ar@{}[r]|*=0[@]{\cong} & \Gamma(Y^\sim)^\approx \ar@{}[r]|*=0[@]{\cong} & \Gamma^d(Y) \ar@{}[r]|*=0[@]{=} & \tau X . }
+\]
+\todo{Why $\sim = \approx$ here?}
+
+\end{proof}
+
+
+Fix a non-zero element $H \in \lie{c}$, and note that $\rho(H)=\rho(\lie{u_q})(H)$. Denote $a := \lambda(H)$. For a $\lie{g}$-module $Y$,
+%
+\[ Y^a := \text{$H$-eigenspace of $Y$ with eigenvalue $a$}, \]
+
+is an $\lie{l}$-module. We define
+%
+\[ \sigma Y := (Y \otimes L^\ast)^a. \]
+
+The functor $\sigma$ is exact. Moreover:
+%
+\begin{lemma}
+\label{lemma:sigmaX=0}
+If $\sigma Y =0$ for $Y \in \mathcal{O}_\lie{g}$, \todo{Why?} then $Y=0$. 
+\end{lemma}
+
+In this section, we want to prove the following:
+
+\begin{theorem}[ES1]
+\label{theorem:es1}
+The functor $\tau \colon \mathcal{O}_\lie{l} \to \mathcal{O}_\lie{g}$ is an equivalence of categories, with inverse $\sigma$.
+\end{theorem}
+
+Let us first see that these functors preserve generalized Verma modules:
+
+\begin{lemma}
+\label{lemma:tau_sigma_Vermas}
+For $\mu \in \Theta$, denote $A:= N(\lie{l,l\cap p},\mu)$, $B:= N(\lie{g,p\cap q},\mu)$, and $C:= N(\lie{g,p},\mu)$. Then
+\begin{enumerate}
+\item \label{item:Verma_1} $U(A) \cong B$,
+\item \label{item:Verma_2} $\tau A \cong C$,
+\item \label{item:Verma_3} $\sigma C \cong A$.
+\end{enumerate}
+\end{lemma}
+%
+\begin{proof}
+\ref{item:Verma_1} follows from induction in stages:
+%
+\begin{align}
+\nonumber U(A) &= \lie{U(g) \otimes_{U(q)} \Big( U(l \cap u^-) \otimes} F(\lie{r},\mu - \rho_\lie{l}) \Big) \otimes L \\
+\nonumber &= \lie{U(u_q^-) \otimes U(l \cap u^-) \otimes} F(\lie{r},\mu - \rho(\lie{l})- \rho(\lie{u_q})) \\
+\label{align:B} &= \lie{U(u_q^- \oplus (l \cap u^-)) \otimes } F(\lie{r},\mu - \rho) = B.
+\end{align}
+
+\ref{item:Verma_2} follows from \ref{item:Verma_1} and Proposition \ref{proposition:Zuckerman_properties}(\ref{item:Zuckerman_Vermas}), which says that $\Gamma^d(B) \cong C$.
+
+To prove \ref{item:Verma_3}, note that $\mu(H)=\lambda(H)=a$, since $\mu$ is in $W_\lie{l}$-orbit of $\lambda$ and $H$ is in the center of $\lie{l}$. Denote by $\beta$ the unique simple root in $\Delta(\lie{u_q})$ (since $\lie{q = l \oplus u_q}$ is maximal), and observe that $\beta \in \Delta^+(\lie{m})$ (since $\lie{p=m \oplus u \not\subseteq q}$). Since $\mu$ is $\lie{m}$-dominant and $\lie{m}$-regular, it follows that $\killing{\beta}{\mu}>0$ and $s_\beta \mu \in P_\lie{r}$. So $s_\beta \mu \prec \mu$, and so there is a (standard) generalized Verma module homomorphism
+%
+\[ \xymatrix{ N=N(\lie{g,p\cap q},s_\beta \mu) \ar[r] \ar@{->>}[rd] & B=N(\lie{g,p\cap q},\mu) \\ & D \ar@{^{(}->}[u]}, \]
+%
+whose image we denoted by $D$. Since $\lie{m \cap q \subseteq m}$ is a maximal parabolic subalgebra, and $\beta$ a unique complementary simple root, \todo{How?} it follows  that $B/D$ is a maximal quotient of $B=U(A)$ that is $\lie{U(m)}$-locally finite and $\lie{U(m)}$-completely reducible. By Lemma \ref{lemma:max_quotient} we have $B/D \cong \tau A \cong C$.
+
+It is easy to see that $\sigma N =0$ (basically because $\killing{\beta}{\mu}>0$ and $\beta(H)>0$), so by exactness of $\sigma$, we also have $\sigma D=0$. Again by exactness of $\sigma$ we have $\sigma B \cong \sigma C$. From line (\ref{align:B}) follows that \[ \sigma B = \lie{U(l \cap u^-) \otimes } F_{\lie{r}}(\mu - \rho)=A.  \qedhere \]
+\end{proof}
+
+To prove Theorem \ref{theorem:es1}, we need to find two natural isomorphisms of functors
+%
+\begin{align}
+\label{align:sigma_tau} \sigma \circ \tau \simeq 1_{\mathcal{O}_\lie{l}}, \\
+\label{align:tau_sigma} \tau \circ \sigma \simeq 1_{\mathcal{O}_\lie{g}}.
+\end{align}
+%
+\begin{proof}[Proof of (\ref{align:sigma_tau})]
+For $X \in \mathcal{O}_\lie{l}$, define $f_X \colon X \to \sigma (\tau X)$ by
+%
+\[ v \mapsto \sigma \left( p_X(1 \otimes v \otimes l) \right), \]
+%
+where $p_X \colon U(X) \to \tau X$ from Lemma \ref{lemma:max_quotient}, and $\sigma$ (by abuse of notation) the $\lie{l}$-equivariant projection $\tau X \to \sigma(\tau X)$. This is obviously natural. We will use induction to prove that $f_X$ is isomorphism for any $X$.
+
+Let $\lambda'$ be $\lie{l}$-dominant $W_\lie{l}$-conjugate of $\lambda$. Any $\mu \in \Theta$ is of the form $\mu = w \lambda'$ for a unique $w \in W_\lie{l}$ (note that in general $\lambda' \notin \Theta$). We write
+%
+\[ N_w := N(\lie{l,l\cap p},\mu), \quad L_w := L(\lie{l},\mu). \]
+%
+For $i \in \mathbb{N}_0$ define $\mathcal{O}_i$ to be the full subcategory of $\mathcal{O}_\lie{l}$ consisting of all $X$ with the property
+%
+\[ (X \colon L_w) \neq 0 \ \Rightarrow \ l(w) \geq i. \]
+%
+Note that $\mathcal{O}_0 = \mathcal{O}_\lie{l}$. If $j=l(w)$ is maximal such that $\mu \in P_\lie{r}$, then $L_w = N_w$ (\cite[Theorem 9.12.]{hum}), and it is the only object in $\mathcal{O}_j$ up to direct sums (follows from \cite[Proposition 3.1.(d)]{hum}). Lemma \ref{lemma:tau_sigma_Vermas} implies $\sigma(\tau L_w) \cong L_w$, and one can check that this isomorphism is realized by $f_{L_w}$. Also, for the record, by Proposition \ref{proposition:Zuckerman_properties}(\ref{item:Zuckerman_Vermas}) we have $\sigma (\Gamma^t U L_w) =0$ for all $t<d$.
+
+Suppose now for some $i$ we have
+%
+\[ 1_{\mathcal{O}_i} \stackrel{f}{\simeq} \sigma \circ \tau |_{\mathcal{O}_i}, \quad \text{ and } \quad \sigma (\Gamma^t U X) =0 \text{ for all $X \in \mathcal{O}_i$ and $t<d$}. \]
+%
+Fix $\mu \in \Theta$ such that $\mu=w \lambda'$ and $l(w)=i-1$, and consider the following short exact sequence (here $N:=N_w$ and $L:=L_w$):
+%
+\[ 0 \to J \hookrightarrow N \twoheadrightarrow L \to 0. \]
+%
+It is clear that $N, L \in \mathcal{O}_{i-1}$, but $J \in \mathcal{O}_{i}$.
+Applying the (exact) functor $U$, then taking the long exact derived-functor sequence for $\Gamma$, and finally applying the (exact) functor $\sigma$, using Proposition \ref{proposition:Zuckerman_properties}(\ref{item:vanishing_above_d}), we obtain a commutative diagram with exact rows:
+%
+\[ \xymatrix@C=1em{ 0 \ar[r] & \sigma(\Gamma^{d-1}UN) \ar[r] & \sigma(\Gamma^{d-1}UL) \ar[r] & \sigma(\Gamma^{d}UJ) \ar[r] & \sigma(\Gamma^{d}UN) \ar[r] & \sigma(\Gamma^{d}UL) \ar[r] & 0 \\
+&&0 \ar[r]  & J \ar[u]^{f_J}_\cong \ar@{^{(}->}[r] & N  \ar[u]^{f_N}_\cong \ar@{->>}[r] & L \ar[u]^{f_L} \ar[r] & 0 .}  \]
+%
+By the inductive hypothesis, $f_J$ is an isomorphism. By Lemma \ref{lemma:tau_sigma_Vermas}, $f_N$ is an isomorphism. By Proposition \ref{proposition:Zuckerman_properties}(\ref{item:Zuckerman_Vermas}), $\sigma(\Gamma^{d-1}UN)=0$. By 5-lemma applied to the first five columns, $\sigma(\Gamma^{d-1}UL)=0$. Similarly (but easier), one can see that $\sigma(\Gamma^{i}UL)=0$ for all $i<d$. Again by 5-lemma, applied to the last five columns, $f_L$ is an isomorphism. We have proved:
+%
+\begin{equation}
+\label{equation:f_L_is_iso}
+f_L \text{ is an isomorphism, and } \sigma(\Gamma^{i}UL)=0 \text{ for $i<d$ and $L \in \mathcal{O}_{i-1}$ simple. } \end{equation}
+%
+We want to prove this statement for all objects in $X \in \mathcal{O}_{i-1}$, not necessarily the simple ones. This can be done by a similar (but easier) induction on the length of the composition series for $X$, and the statement (\ref{equation:f_L_is_iso}) serves as a basis of this induction. Namely, any non-simple $X \in \mathcal{O}_{i-1}$ can be put in a short exact sequence
+%
+\[ 0 \to X' \to X \to X'' \to 0, \] 
+%
+where $X',X'' \in \mathcal{O}_{i-1}$ have strictly smaller composition series. This completes the original induction, and hence proves (\ref{align:sigma_tau}).
+\end{proof}
+
+\begin{lemma}
+\begin{enumerate}
+\item The functor $\tau \colon \mathcal{O}_\lie{l} \to \mathcal{O}_\lie{g}$ is exact.
+\item For $\mu \in \Theta$, $\tau L(\lie{l},\mu) \cong L(\lie{g},\mu)$.
+\end{enumerate}
+\end{lemma}
+%
+\begin{proof}
+Since $U$ is exact and $\Gamma^{d+1}=0$, it follows from the long exact derived-functor sequences that $\tau$ is right-exact. By abstract nonsense, it suffices to prove that $\tau$ preserves monomorphisms. Take a monomorphism $\varphi \colon A \to B$ in $\mathcal{O}_\lie{l}$, and apply $\tau$ to obtain $0 \to K \hookrightarrow \tau A \stackrel{\tau \varphi}{\longrightarrow} \tau B$, where $K=\operatorname{Ker}(\tau \varphi) \in \mathcal{O}_\lie{g}$. Apply $\sigma$ now, which is exact, and use (\ref{align:sigma_tau}) to obtain $0 \to \sigma K \hookrightarrow A \stackrel{\varphi}{\hookrightarrow} B$. It follows that $\sigma K =0$. Lemma \ref{lemma:sigmaX=0} implies $K=0$, hence $\tau$ is exact.
+
+The module $L(\lie{l},\mu)$ is the unique simple quotient of $N(\lie{l,l\cap p},\mu)$. By exactness of $\tau$ and Lemma \ref{lemma:tau_sigma_Vermas}, $\tau L(\lie{l},\mu)$ is a quotient of $N(\lie{g, p},\mu)$. We will prove that $\tau L(\lie{l},\mu)$ is simple, and than it will follow that $\tau L(\lie{l},\mu)=L(\lie{g},\mu)$.
+
+Suppose $C \leq \tau L(\lie{l},\mu)$, and apply $\sigma$. Then $\sigma C \leq L(\lie{l},\mu)$. If $\sigma C =0$, by Lemma \ref{lemma:sigmaX=0} we have $C=0$. Otherwise, $\sigma C = L(\lie{l},\mu)$. But then, we have $\sigma \left( \tau L(\lie{l},\mu) / C \right) =0$, so by the same lemma we have $C=\tau L(\lie{l},\mu)$. Therefore, $\tau L(\lie{l},\mu)$ is simple.
+\end{proof}
+
+\begin{proof}[Proof of (\ref{align:tau_sigma})]
+For $X \in \mathcal{O}_\lie{g}$ define
+%
+\[ g_X \colon U(\sigma X) \cong \lie{U(g) \otimes_{U(q)}} X^{a- \rho(\lie{u_q})(H)} \to X\]
+%
+(note that $L^\ast$ and $L$ cancel out), by $y \otimes v \mapsto y \cdot v$. Using some properties of $\sigma$ (namely Lemma \ref{lemma:sigmaX=0}), \todo{How?} one sees that $g_X$ is always a surjection. Then, by Lemma \ref{lemma:max_quotient} there is a canonical map $h_X$ fitting into the following commutative diagram:
+%
+\[ \xymatrix{ U(\sigma X) \ar@{->>}[rr]^{g_X} \ar@{->>}[rd]_{p_{\sigma X}} && X \\ & \tau (\sigma X) \ar[ru]_{h_X} .} \]
+%
+If $X \in \mathcal{O}_\lie{g}$ is a generalized Verma module, then one can check that the isomorphism $\tau (\sigma X) \cong X$ from Lemma \ref{lemma:tau_sigma_Vermas} is realized by $h_X$. Now one can prove that $h_X$ is an isomorphisms for all $X \in \mathcal{O}_\lie{g}$ using analogous (but easier) double induction as in the proof of (\ref{align:sigma_tau}), downward on ``depth'' in $\mathcal{O}_\lie{g}$ (i.e. $l(w)$ for $w \in W$), and the length of composition series for $X$. This proves (\ref{align:tau_sigma}).
+\end{proof}
+
+This completes the proof of Theorem \ref{theorem:es1}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{A second equivalence of categories (Rafael 12.6.)}
+
+This is Section \S 7. in \cite{es}, where Theorem \ref{thm:es2} is proved. Now the truncation will appear on the $\lie{g}$-module side. Our generalized infinitesimal character will not be arbitrary as before, but a specific one, so we will have to prove that the sets of parameters agree in this specific case. Notation and assumptions for parabolic subalgebras $\lie{p=m \oplus u}$, $\lie{q=l \oplus u_q}$ are the same as in the beginning of the previous section. We will use derived Zuckerman functor in the middle degree $s=\frac{1}{2}\dim \lie{m/r}$ (which is a positive integer), instead of the top degree as before.
+
+Take the longest element $w_1 \in W_\lie{l}$, and define
+%
+\[ \nu := - w_1 \rho. \]
+%
+Note that $\nu$ is $\lie{l}$-dominant. Since $\lie{m \cap q \subseteq m}$ is a (maximal) parabolic subalgebra, with Levi $\lie{r = m \cap l}$, there is a decomposition $W_\lie{m} = {}^\lie{r}W W_\lie{r}$. Take the longest element $w_0 \in {}^\lie{r}W$, and define
+%
+\[ \mu := w_0 \nu = - w_0 w_1 \rho. \]
+%
+We will consider the following three categories:
+\begin{itemize}
+\item $\mathcal{O}_\lie{l} := \mathcal{O}(\lie{l},\lie{l \cap p},\nu)$.
+
+\item $\mathcal{O}_{\nu} := \mathcal{O}_t(\lie{g},\lie{p\cap q},\nu)$.
+
+\item $\mathcal{O}_{\mu} := \mathcal{O}_t(\lie{g},\lie{p},\mu)$.
+\end{itemize}
+%
+In this section we want to prove:
+%
+\begin{theorem}[ES2]
+\label{theorem:es2}
+The categories $\mathcal{O}_\lie{l}$, $\mathcal{O}_\nu$ and $\mathcal{O}_\mu$ are all equivalent.
+\end{theorem}
+
+Let us compare the sets of parameters for the first two categories in the above theorem. Define
+%
+\[ \Psi := \big\{ w \nu \colon w \in W_\lie{l} \text{ such that $w \nu$ is $\lie{r}$-dominant}  \big\}. \]
+%
+It is clear that $\Psi$ parametrizes simple modules in $\mathcal{O}_\lie{l}$ (by adding $\rho(\lie{l})$ to the highest weights). Moreover, since $\nu \in \Psi$ is $l$-dominant, we have $\xi \prec \nu$ for all $\xi \in \Psi$.
+%
+\begin{lemma}
+\label{lemma:Psi_12}
+Let $\xi \in \Psi$ and $\lambda \in P_\lie{r}$. If $\lambda \prec \xi$, then $\lambda \in \Psi$.
+
+Therefore, $\Psi$ also parametrizes simple modules in $\mathcal{O}_\nu$ (by adding $\rho$ to the highest weights).
+\end{lemma}
+%
+\begin{proof}
+Hypothesis implies existence of $\alpha_i \in \Delta^+$, $i=1,\ldots,t$ such that for $\xi_i:=s_{\alpha_i} \ldots s_{\alpha{_1}} \xi$ we have: $\killing{\alpha_i}{\xi_{i-1}} >0$ for $i=1,\ldots,t$, and $\lambda=\xi_t$.
+
+It is enough to prove that all $\alpha_i \in \Delta^+(\lie{l})$. If this were not true, take the minimal $i\geq 1$ for which $\alpha_i \in \Delta(\lie{u_q})$. Then $\xi_{i-1} \in W_{\lie{l}} \nu$, so $\xi_{i-1}=-w\rho$, for some $w \in W_{\lie{l}}$. We have
+%
+\[ \killing{\alpha_i}{\xi_{i-1}} = - \killing{\underbrace{w^{-1} \alpha_i}_{\in \Delta(\lie{u_q}) \subseteq \Delta^+}}{\rho} < 0,\]
+%
+a contradiction. Above we used the fact that $W_\lie{l}$ preserves $\Delta(\lie{u_q})$, which can be proved by induction over the length of the elements in $W_\lie{l}$.
+\end{proof}
+
+Recall the induction functor $U(X) := \lie{U(g)\otimes_{U(q)}} X \otimes L$. The first part of Theorem \ref{theorem:es2} is given by the following proposition:
+%
+\begin{proposition}
+\begin{enumerate}
+\item For $\xi \in \Phi$ we have $U(L(\lie{l},\xi)) \cong L(\lie{g},\xi)$,
+\item The functor $U \colon \mathcal{O}_\lie{l} \to \mathcal{O}_\nu$ is an equivalence of categories.
+\end{enumerate}
+\end{proposition}
+%
+\begin{proof}
+Recall Lemma \ref{lemma:tau_sigma_Vermas}(\ref{item:Verma_1}), from which follows that $U(L(\lie{l},\xi))$ is a quotient of $N(\lie{g,p\cap q},\xi)$. From Lemma \ref{lemma:Psi_12} follows that any non-trivial $\lie{g}$-submodule of $U(L(\lie{l},\xi))$ \todo{Why?} must intersect $1 \otimes L(\lie{l},\xi) \otimes L$. So $U(L(\lie{l},\xi))$ is simple, and the first claim of the lemma follows.
+
+Consider the functor $\sigma \colon \mathcal{O}_\nu \to \mathcal{O}_l$ defined by $\sigma B := \left(B \otimes L^\ast \right)^a$ as before, but now $a:= \nu(H) = - \rho(H) = - \rho(\lie{u_q})(H)$. We want to prove that $\sigma \circ U \simeq 1_{\mathcal{O}_{\lie{l}}}$ and $U \circ \sigma  \simeq 1_{\mathcal{O}_{\nu}}$. The former is given by the natural map
+%
+\[ \mathcal{O}_\lie{l} \ni A \to \sigma(UA) = \left( \lie{U(g) \otimes_{U(q)}} A \right)^{a}, \quad a \mapsto 1 \otimes a, \]
+%
+which is clearly an $\lie{l}$-equivariant isomorphism. The latter is given, for $B \in \mathcal{O}_\nu$ by
+%
+\[ U(\sigma B) = \lie{U(g) \otimes_{U(q)}} B^{-2 \rho(\lie{u_q})(H)} \to B, \quad u \otimes b \mapsto u \cdot b. \]
+%
+This is obviously natural and $\lie{g}$-invariant. By Lemma \ref{lemma:Psi_12}, \todo{Why?} it is an isomorphism.
+\end{proof}
+
+The second equivalence in Theorem \ref{theorem:es2} is more difficult. Recall that $\lie{m \cap q \subseteq m}$ is a maximal parabolic, and that we have $\Delta^+(\lie{m}) = \Delta^+(\lie{r}) \cup \Delta(\lie{u_q \cap m})$ (a disjoint union). We took $w_0$ to be the longest element in
+%
+\[  {}^\lie{r} W = \big\{ w \in W_\lie{m} \colon \underbrace{\{ \alpha \in \Delta^+(\lie{m}) \colon w \alpha <0 \}}_{\# = l(w)} \subseteq \Delta(\lie{u_q \cap m}) \big\}. \]
+%
+This means that
+%
+\begin{align*}
+& w_0 (\Delta^+(\lie{r})) \subseteq \Delta^+(\lie{m}), \\
+& w_0 (\Delta(\lie{u_q \cap m})) \subseteq \Delta^-(\lie{m}).
+\end{align*}
+%
+The latter one is equivalent to $w_0 (\Delta(\lie{u_q^- \cap m})) \subseteq \Delta^+(\lie{m})$. Because of cardinality reasons, we have a disjoint union
+%
+\begin{equation}
+\label{equation:w_0_inverse}
+w_0^{-1} (\Delta^+(\lie{m}))  = \Delta^+(\lie{r}) \cup \Delta(\lie{u_q^- \cap m}).
+\end{equation}
+%
+
+We put
+%
+\[ \Theta := w_0 \Psi. \]
+%
+\begin{lemma}
+\begin{enumerate}
+\item We have $\Theta \subseteq P_\lie{m}$.
+
+\item For $\xi \in \lie{h}^\ast$ we have $\xi \in \Psi$ if and only if $w_0 \xi \in P_\lie{m}$ and $w_0 \xi \prec \mu$.
+
+\end{enumerate}
+
+Therefore, $\Theta \stackrel{w_0}{\sim} \Psi$ parametrize simple modules in $\mathcal{O}_\mu$.
+\end{lemma}
+%
+\begin{proof}
+Take $w \nu \in \Psi$, where $w \in W_\lie{l}$ and $w \nu$ is $\lie{r}$-dominant, and take $\alpha \in \Delta^+(\lie{m})$. We have
+%
+\[ \killing{\alpha}{w_0 w \nu} = \killing{w_0^{-1}\alpha}{w \nu} > 0 \quad \text{ if $w_0^{-1}\alpha \in \Delta^+(\lie{r})$.} \]
+%
+Otherwise, by (\ref{equation:w_0_inverse}) we must have $w_0^{-1}\alpha \in \Delta(\lie{u_q^-})$. But then
+%
+\[\killing{w_0^{-1}\alpha}{w \nu} = \killing{w_0^{-1}\alpha}{- ww_1 \rho} = -\killing{\underbrace{w_1^{-1}w^{-1}}_{\in W_\lie{l}}w_0^{-1}\alpha}{\rho} >0  \]
+%
+because $W_\lie{l}$ preserves $\Delta(\lie{u_q^-})$, so $w_1^{-1}w^{-1}w_0^{-1}\alpha<0$. This proves the first claim. The same proof also gives:
+%
+\begin{equation}
+\label{equation_u_q_negative}
+\killing{\alpha}{\xi} < 0 \quad \text{ for all } \alpha \in \Delta(\lie{u_q}), \ \xi \in \Psi.
+\end{equation}
+
+Let us now prove the second statement. Take $\xi \in \Psi$. Then $\xi \prec \nu$. We have to show that $w_0 \xi \prec \mu$. We can choose $\alpha_i \in \Delta^+$, $i=1,\ldots,t$ so that
+%
+\begin{align*} & \nu_i:= s_{\alpha_i} \ldots s_{\alpha_1} \nu \text{ are all $\lie{r}$-dominant}, \\
+& \nu_0=\nu, \ \nu_t=\xi, \\
+& \killing{\alpha_i}{\nu_{i-1}}>0 \text{ for all $i=1,\ldots,t$}.
+\end{align*}
+%
+By Lemma \ref{lemma:Psi_12}, all $\nu_i \in \Psi$. Then by (\ref{equation_u_q_negative}), all $\alpha_i \in \Delta^+(\lie{l})$. So each $\alpha_i$ is either in $\Delta^+(\lie{r})$ or in $\Delta(\lie{u \cap l})$. In the first case, $w_0 \alpha_i \in \Delta^+(\lie{m})$ because of (\ref{equation:w_0_inverse}). In the second case, $w_0 \alpha_i \in \Delta(\lie{u})$, because $w_0 \in W_\lie{m}$ preserves $\Delta(\lie{u})$. In either case,
+%
+\[ \gamma_i:= w_0 \alpha_i \in \Delta^+, \quad i=1, \ldots, t. \]
+%
+Observe that
+%
+\begin{align*} & s_{\gamma_i} (w_0 \nu_{i-1}) = w_0 s_{\alpha_i} \nu_{i-1} = w_0 \nu_i , \\
+& w_0 \nu_0 = w_0 \nu = \mu, \quad w_0 \nu_t =  w_0 \xi, \\
+& \killing{\gamma_i}{w_0 \nu_{i-1}} = \killing{w_0 \alpha_i}{w_0 \nu_{i-1}} = \killing{\alpha_i}{\nu_{i-1}} >0.
+\end{align*}
+%
+So we have proved $w_0 \xi \prec \mu$.
+
+Now we will prove the converse. Take $\xi \in \lie{h}^\ast$ so that $w_0 \xi$ is $\lie{m}$-dominant, and $w_0 \xi \prec \mu$. We want to prove that $\xi \in \Psi$. Since for $\alpha \in \Delta^+(\lie{r})$,
+%
+\[ \killing{\xi}{\alpha} =  \killing{w_0\xi}{w_0\alpha} > 0\]
+%
+because $w_0\alpha \in \Delta^+(\lie{m})$ (by (\ref{equation:w_0_inverse})), it follows that $\xi$ is $\lie{r}$-dominant. So by Lemma \ref{lemma:Psi_12} it is enough to prove that $\xi \prec \nu$. Our assumption implies that we can choose $\gamma_i \in \Delta^+$, $i=1,\ldots,t$ so that
+%
+\begin{align*} & \mu_i:= s_{\gamma_i} \ldots s_{\gamma_1} \mu \text{ are all $\lie{m}$-dominant}, \\
+& \mu_0=\mu, \ \mu_t=w_0\xi, \\
+& \killing{\gamma_i}{\mu_{i-1}}>0 \text{ for all $i=1,\ldots,t$}.
+\end{align*}
+%
+First, note that all $\gamma_i \in \Delta(\lie{u})$, simply because reflections in $W_\lie{m}$ cannot preserve $\lie{m}$-dominance. We define
+%
+\[ \beta_i := w_0^{-1} \gamma_i, \]
+%
+which is again an element of $\Delta(\lie{u}) \subseteq \Delta ^+$, because $w_0^{-1} \in W_\lie{m}$. As before, we see that
+%
+\begin{align*} & s_{\beta_i} (w_0^{-1} \mu_{i-1}) = w_0^{-1} s_{\gamma_i} \nu_{i-1} = w_0^{-1} \mu_i , \\
+& w_0^{-1} \mu_0 = w_0^{-1} \mu = \nu, \quad w_0^{-1} \mu_t =  w_0^{-1} w_0 \xi = \xi, \\
+& \killing{\beta_i}{w_0^{-1} \mu_{i-1}} = \killing{\gamma_i}{\mu_{i-1}} >0. 
+\end{align*}
+%
+So we have proved $\xi \prec \nu$.
+\end{proof}
+
+Recall that $s=\frac{1}{2}\dim \lie{m/r} = \#\Delta(\lie{u_q \cap m})=l(w_0)$. Let us state a special case of Proposition \ref{proposition:Zuckerman_properties}(\ref{item:Zuckerman_Vermas}):
+%
+\begin{lemma}
+\label{lemma:Gamma_Vermas_s}
+For $\xi \in \Psi$ we have
+%
+\[ \Gamma^i N(\lie{g,p\cap q},\xi) \cong \begin{cases} N(\lie{g,p},w_0\xi) &\colon i=s  \\ 0 &\colon \text{otherwise}. \end{cases} \]
+\end{lemma}
+%
+The functor $\Gamma^s$ will be our equivalence $\mathcal{O}_\nu \to \mathcal{O}_\mu$. Before we start proving this, we need to recall duality in the category $\mathcal{O}$.
+
+Fix an anti-involution $\tau \colon \lie{g \to g}$ such that $\tau |_\lie{h}$ is identity and $\tau(\lie{g}_\alpha) = \lie{g}_{-\alpha}$ for all root subspaces, and extend it to an anti-automorphism of $\lie{U(g)}$. For an object $A$ of the category $\mathcal{O}$ we define its \emph{contravariant dual} by
+%
+\[ A^\wedge := \bigoplus_{\lambda \in \lie{h}^\ast} A_\lambda^\ast, \qquad (x \cdot f)(v) := f(\tau(x) \cdot v), \quad x \in \lie{g}, f \in A^\wedge, v \in A_\lambda.\]
+%
+This defines an exact contravariant equivalence that preserves (generalized) infinitesimal character and composition factor multiplicities. Note $(A^\wedge)^\wedge \cong A$. Homomorphisms $A \to A^\wedge$ correspond bijectively to \emph{contravariant forms} on $A$. Such a form on $A$ is non-degenerate if and only if the corresponding homomorphism is an isomorphism $A \cong A^\wedge$. Modules admitting such isomorphisms are called \emph{self-dual}. Every highest weight module admits a unique up to scalar contravariant form, and its radical is the unique maximal submodule. In particular, such a form on a highest weight module is non-degenerate if and only if this module is simple. See \cite[3.2. and 3.14.]{hum} and \cite{irv}.
+
+\begin{lemma}
+\label{lemma:Gamma_duality}
+\begin{enumerate}
+\item \label{item:contravariant_duality} For $A \in \mathcal{O}_\nu$ we have $\Gamma^s (A^\wedge) \cong (\Gamma^s A)^\wedge$.
+
+\item If $A \in \mathcal{O}_\nu$ is self-dual, then so is $\Gamma^s A$.
+
+\item The functor $\Gamma^s$ is exact on $\mathcal{O}_\nu$.
+\end{enumerate}
+\end{lemma}
+%
+\begin{proof}
+The first claim \todo{How?} follows from Proposition \ref{proposition:Zuckerman_properties}(\ref{item:easy_duality}). If $A \cong A^\wedge$, then by functoriality and the first claim we have $\Gamma^s A \cong \Gamma^s(A^\wedge) \cong (\Gamma^sA)^\wedge$, hence the second claim of the lemma.
+
+To prove exactness of $\Gamma^s$ on $\mathcal{O}_\nu$, suppose first that $\Gamma^t A=0$ for all $t \neq s$ and $A \in \mathcal{O}_\nu$ simple. Then it is easy to see that $\Gamma^t =0$ on $\mathcal{O}_\nu$ for all $t \neq s$ by induction on the length of composition series, and long exact derived-functor sequences. The exactness of $\Gamma^s$ then follows by another application of long exact derived-functor sequences.
+
+\todo{This last paragraph below in the proof doesn't make sense.}
+
+To prove $\Gamma^t A=0$ for $t \neq s$ and simple module $A \in \mathcal{O}_\nu$, one sees that $A$ is free over $\lie{U(m \cap u_q^-)}$ (???), and so $\Gamma^t A=0$ for $t<s$ (Proposition \ref{proposition:Zuckerman_properties}(\ref{item:restriction_p-}) ???). But also $\Gamma^t A=0$ for $t>s$ because $A$ is self-dual, and the part \ref{item:contravariant_duality}.
+\end{proof}
+
+\begin{lemma} Let $\xi \in \Psi$. Then
+\label{lemma:Gamma_s_simple_projective}
+\begin{enumerate}
+\item \label{item:Gamma_s_simple} $\Gamma^s L(\lie{g},\xi) \cong L(\lie{g},w_0 \xi)$,
+
+\item \label{item:Gamma_s_projective} $\Gamma^s \left( T_\nu P(\lie{g,p\cap q},\xi) \right) \cong T_\mu P(\lie{g,p},w_0\xi)$.
+\end{enumerate}
+\end{lemma}
+%
+\begin{proof}
+Simple highest weight modules are the unique self-dual quotients of generalized Verma modules. So the first claim follows from Lemma \ref{lemma:Gamma_Vermas_s} and Lemma \ref{lemma:Gamma_duality} ($\Gamma^s$ preserves self-duality and quotients).
+
+We prove the second claim by backward induction over the Bruhat order on $\Psi$. For $\xi \in \Psi$ we will write $N(\xi)=N(\lie{g,p\cap q},\xi)$ and $N(w_0 \xi)=N(\lie{g,p},w_0\xi)$ (ignoring a slight abuse of notation), and analogously for $P(\xi)$ and $P(w_0\xi)$. The biggest element in $\Psi$ is $\nu$, for which  Lemma \ref{lemma:truncated_category}(\ref{item:truncated_category_reciprocity}) implies
+%
+\begin{align*}
+& T_\nu P(\nu) = N(\nu), \\
+& T_\mu P(w_0\nu) = N(\mu).
+\end{align*}
+%
+So the claim is true by Lemma \ref{lemma:Gamma_Vermas_s}. Suppose now that for some $\xi \in \Psi$ we have
+%
+\begin{equation}
+\label{equation:GammaTP}
+\Gamma^s T_\nu P(\xi) = T_\mu P(w_0 \xi).
+\end{equation}
+%
+Take $r \in W$ so that $\xi = r \rho$, and take a simple root $\alpha \in \Delta^+(\lie{l})$ such that $l(r s_\alpha)=l(r)+1$ and $\bar{\xi} :=r s_\alpha \rho \in \Psi$. We need to show that (\ref{equation:GammaTP}) is true when $\xi$ is replaced by $\bar{\xi}$.
+
+Denote by $\omega$ the fundamental weight corresponding to the simple root $\alpha$, and consider the following translation functors
+%
+\[ \phi:=\phi^{{\rho}}_{{\rho}-\omega}, \quad \psi := \psi_{{\rho}}^{{\rho}-\omega}. \]
+%
+Denote by $\theta := \phi \circ \psi$ the ``wall crossing'' functor. By Lemma \ref{lemma:translation_truncation}, $\theta$ commutes with $T_\nu$. Moreover, $\theta$ \todo{Proposition \ref{proposition:Zuckerman_properties}(\ref{item:F_Gamma})?}  commutes with $\Gamma^s$. So the equation (\ref{equation:GammaTP}) implies the following:
+%
+\begin{equation}
+\label{equation:GammaTwallP}
+\Gamma^s T_\nu \theta P(\xi) = \theta T_\mu P(w_0 \xi),
+\end{equation}
+%
+which is clearly a projective module in $\mathcal{O}_\nu$ (truncation and translations preserve projective objects). From \cite[Proposition (vi) in 2.3]{irv} we know that $P(\bar{\xi})$ is a direct summand of $\theta P(\xi)$, so $\Gamma^s T_\nu P(\bar{\xi})$ is a direct summand of $\Gamma^s T_\nu \theta P(\xi)$. It follows that $\Gamma^s T_\nu P(\bar{\xi})$ is projective.
+
+Modules $\Gamma^s T_\nu P(\bar{\xi})$ and $T_\mu P(w_0 \bar{\xi})$ have the same Verma flag, which follows from Lemma \ref{lemma:truncated_category}(\ref{item:truncated_category_reciprocity}), Lemma \ref{lemma:Gamma_Vermas_s} and exactness of $\Gamma^s$, so they have the same character. Thus, both being projective, they are isomorphic (see \cite[3.10.]{hum}). This finishes the induction step.
+\end{proof}
+
+\begin{proposition}
+The functor $\Gamma^s \colon \mathcal{O}_\nu \to \mathcal{O}_\mu$ is an equivalence of categories.
+\end{proposition}
+%
+\begin{proof}
+We need to prove that the functor $\Gamma^s \colon \mathcal{O}_\nu \to \mathcal{O}_\mu$ is full, faithful, and essentially surjective.
+
+To prove that it is faithful, take a non-zero morphism $\varphi \colon A \to B$ in $\mathcal{O}_\nu$. Since $\operatorname{Im} \varphi \neq 0$, there is a simple module inside. So Lemma \ref{lemma:Gamma_s_simple_projective}(\ref{item:Gamma_s_simple}) and exactness imply that there is a simple module in $\Gamma^s(\operatorname{Im} \varphi)$. But exactness again implies $\Gamma^s(\operatorname{Im} \varphi) \cong \operatorname{Im}(\Gamma^s\varphi)$, so $\Gamma^s\varphi \neq 0$. This proves faithfulness of $\Gamma^s$: for any $A,B \in \mathcal{O}_\nu$, $\Gamma^s$ induces an injection
+%
+\begin{equation}
+\label{equation:Gamma_faithful}
+\Hom(A,B) \stackrel{\Gamma^s}{\hookrightarrow} \Hom(\Gamma^s A,\Gamma^s B).
+\end{equation}
+
+To prove essential surjectivity, take first $B \in \mathcal{O}_\nu$ and $\xi \in \Psi$, and observe (we write again $P(\xi)$ instead of $P(\lie{g,p\cap q},\xi)$):
+%
+\begin{multline*} \dim \Hom(T_\nu P(\xi),B) = (B \colon L(\xi)) =  (\Gamma^s B \colon L(w_0\xi)) = \\ = \dim \Hom(T_\mu P(w_0\xi),\Gamma^s B) = \dim \Hom(\Gamma^s T_\nu P(\xi)),\Gamma^s B). \end{multline*}
+%
+Here the first and the third equality follow from \cite[9.8.]{hum} and Proposition \ref{lemma:truncated_category}(\ref{item:truncated_category_reciprocity}), the second equality follows from exactness of $\Gamma^s$ and Proposition \ref{lemma:Gamma_s_simple_projective}(\ref{item:Gamma_s_simple}), and the last equality is Proposition \ref{lemma:Gamma_s_simple_projective}(\ref{item:Gamma_s_projective}). Since these $\Hom$-spaces are finite dimensional, and since any projective object in $\mathcal{O}$ is a direct sum of indecomposable projectives, together with (\ref{equation:Gamma_faithful}) it follows that
+%
+\begin{equation}
+\label{equation:Gamma_projective}
+\Hom(P,B) \stackrel{\Gamma^s}{\cong} \Hom(\Gamma^s P,\Gamma^s B).
+\end{equation}
+%
+Now take any $Y \in \mathcal{O}_\mu$, and take an exact sequence $P' \stackrel{\pi}{\to} P \to Y \to 0$ with $P, P'$ projectives in $\mathcal{O}_\mu$ (there are enough projectives in $\mathcal{O}_\mu$). Since any projective  object is a direct sum of indecomposable projectives, and because of Lemma \ref{lemma:Gamma_s_simple_projective}(\ref{item:Gamma_s_projective}) we can find projectives $Q, Q' \in \mathcal{O}_\nu$ such that $\Gamma^s Q=P$ and $\Gamma^s Q'=P'$. Because of (\ref{equation:Gamma_projective}), $\pi = \Gamma^s \varphi$ for some $\varphi \colon Q \to Q'$. We now have
+%
+\[ Y \cong \operatorname{Coker} \pi = \operatorname{Coker} \Gamma^s \varphi \cong \Gamma^s (\operatorname{Coker} \varphi), \]
+%
+so $\Gamma^s$ is essentially surjective.
+
+It remains to prove that $\Gamma^s$ is full, i.e. that (\ref{equation:Gamma_faithful}) is also surjective, hence bijective, for all $A,B \in \mathcal{O}_\nu$ and not just when $A$ is projective. Take an exact sequence $Q' \to Q \to A \to 0$ with $Q, Q'$ projectives in $\mathcal{O}_\nu$. By applying the left exact contravariant functors $\Hom(-,B)$ and $\Hom(\Gamma^s(-),\Gamma^sB)$, we obtain the following commutative diagram with exact rows:
+%
+\[ \xymatrix{ 0 \ar[r] & \Hom(A,B) \ar[d] \ar[r] & \Hom(Q,B) \ar[d] \ar[r] & \Hom(Q',B) \ar[d] \\
+0 \ar[r] & \Hom(\Gamma^sA,\Gamma^sB) \ar[r] & \Hom(\Gamma^sQ,\Gamma^sB) \ar[r] & \Hom(\Gamma^sQ',\Gamma^sB) . } \]
+%
+Since by (\ref{equation:Gamma_projective}) the last two vertical morphisms above are isomorphisms, by 5-lemma so is the first vertical arrow. This proves that $\Gamma^s$ is full.
+\end{proof}
+
+This finishes the proof of Theorem \ref{theorem:es2}. In summary:
+%
+\begin{proposition}
+There is an equivalence of categories $I \colon \mathcal{O}_\lie{l} \to \mathcal{O}_\nu$ with the following properties: For $\xi \in \Psi$
+%
+\begin{enumerate}
+\item $I(L(\lie{l},\xi)) \cong L(\lie{g},w_0\xi)$,
+\item $I(N(\lie{l,l\cap p},\xi)) \cong N(\lie{g,p},w_0\xi)$,
+\item $I(P(\lie{l,l\cap p},\xi)) \cong T_\nu P(\lie{g,p},w_0\xi)$.
+\end{enumerate}
+\end{proposition}
+%
+\begin{proof}
+$I:=\Gamma^s \circ U$.
+\end{proof}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Enright--Shelton Equivalences for Hermitian Symmetric Pairs (Vít 29.5.)}
+
+Results of the second part of \cite{es}:
+\begin{itemize}
+	\item Equivalence of regular infinitesimal block of $\lie{g}$ with semi-regular (i.e. one singularity) infinitesimal block of Lie algebra of rank $\mathrm{rk}\, \lie{g} -2$.
+	\item Equivalences of semiregular blocks corresponding to \emph{short roots} via translation functors.
+	\item Decomposition of the semiregular block corresponding to \emph{long root} into odd and even parts.
+	\item Classification of homomorphisms of parabolic Verma modules in regular character. 
+		\[
+			\Hom(N(x\rho), N(y\rho)) \simeq \mathbb{C} \text { if and only if } x\rho = \overline{yr_\Omega\rho}
+		\]
+	\item Description of $\Ext(N_y, L_w)$.
+	\item Recursion formulas for Kazhdan--Lusztig--Vogan polynomials and explicit formula in terms of combinatorial chains.
+\end{itemize}
+
+\subsection{Additional notation}
+%Set of pairs of positive roots
+%\[
+%	\mathcal{M} = \{ (\gamma, \nu) \in \roots^+ \times \roots^+ \,|\, \killing{\gamma}{\nu} \neq 0 \text{ or both roots are long}  \}
+%\]
+%and for $\alpha \in \roots$ we define 
+%\[
+%\roots(\lie{u}, \alpha) = \{ \gamma \in \roots(\lie{u}) \,|\, (\gamma, \alpha) \notin \mathcal{M} \}.
+%\]
+%
+
+If $\alpha$ is a simple root we will denote by $\omega_\alpha$ the corresponding fundamental weight. 
+
+The following set parametrizes the simple modules in $\mathcal{O}_\mu = \mathcal{O}(\lie{g}, \lie{p}, \rho - 
+\omega_\alpha)$
+\begin{align*}
+W_\alpha &= \{ w \in W^\lie{l} \,|\, w \prec w s_\alpha \et w(\rho-\omega_\alpha) \in P_\lie{l} \} \\
+         &= \{ w \in W^\lie{l} \,|\, w \prec w s_\alpha \et ws_\alpha \in W^\lie{l} \} 
+\end{align*}
+
+Recall the decomposition into minimal length representatives $W = W_\lie{l}W^\lie{l}$ and for $w$ denote by $\overline{w} \in W^\lie{l}$ the minimal length representative of $W_\lie{l} w.$ (We have $\overline{w}\rho = \overline{w\rho}.$) 
+
+%TODO translation functors
+
+\subsection{Wall shifting}
+
+\begin{theorem}
+	Let $\alpha, \beta$ be two adjacent (nonorthogonal) short roots. Set $\phi_\mu = \phi_{\rho-\omega_\mu}^\rho$ (translation from ``$\mu$-wall'') and $\psi_\mu = \psi_\rho^{\rho-\omega_\mu}$ (translation to ``$\mu$-wall''). The functor $\pi = \psi_\beta \circ \phi_\alpha$ has as natural inverse $\pi' = \psi_\alpha \circ \phi_\beta$ and it is an equivalence of categories $\mathcal{O}_\alpha$ and $\mathcal{O}_\beta.$
+	
+	Moreover it sends simple modules to simple modules and thus it induces bijection $\pi\colon W_\alpha \to W_\beta$ by:
+	\[
+		\pi(L(y(\rho - \omega_\alpha))) = L(\pi(y) (\rho - \omega_\beta).
+	\]
+	This mapping has the following simple expression $\pi(y) = \overline{ys_\beta s_\alpha}.$
+	If $y\beta \in \roots^+(\lie{l})$ then $\pi(y) = ys_\alpha$. If $y\beta \in \roots(\lie{u})$ then $\pi(y) = ys_\beta.$
+\end{theorem}
+
+This theorem treats all semiregular infinitesimal blocks for Hermitian symmetric pairs except for this one case: $\lie{g} = \lie{sp}$, $\lie{l} = \lie{sl}$ and $\alpha = \alpha_{n-1}$, $\beta = \alpha_n.$ 
+
+Let $\mathcal{O}_i = \mathcal{O}(\lie{sp}, \lie{sl}, \rho - \omega_i)$ be the semiregular block corresponding to the $i$-th simple root and let $\Theta_i$ denote the set highest weights plus $\rho$ of $\mathcal{O}_i$. Then in the Bourbaki notation we have
+\begin{align*}
+	\Theta_i &= \{a_1, \ldots a_n) \,|\, \{|a_k|\}_{k=1}^n = \{1, \ldots, n\} \et a_1 > a2 > \cdots a_n \} \\
+	\Theta_{n-1} &= \{b_1, \ldots b_n) \,|\, \{|b_k|\}_{k=1}^n = \{1, 1, \ldots, n-1\} \et b_1 > b2 > \cdots b_n \} \\
+	\Theta_{n} &= \{b_1, \ldots b_n) \,|\, \{|b_k|\}_{k=1}^n = \{0, 1, \ldots, n-1\} \et b_1 > b2 > \cdots b_n \} 
+\end{align*}
+
+For $\zeta = (b_1, \ldots, b_n) \in \Theta_n$  we say that it has \emph{even (odd) parity} if the number of negative $b_i$ is even (odd). If $\zeta = (b_1, \ldots, b_k, 0, -1, \ldots, b_n)$, then we define $\widetilde{\zeta} = (b_1, \ldots, b_k, 1, 0, \ldots, b_n)$ and $\widetilde{\widetilde{\zeta}} = \zeta$. We remark that $\widetilde{\zeta}$ and $\zeta$ have always opposite parity. 
+
+Define $\mathcal{O}_\beta (\text{even})$ as the full subcategory of $\mathcal{O}_\beta$ consisting of all modules whose composition factors all highest weights plus $\rho$ of even parity. Similarly define $\mathcal{O}_\beta (\text{odd}).$
+
+\begin{theorem}
+	The restriction of the functor $\pi'$ to $\mathcal{O}_\beta (\text{even})$ (respectively  $\mathcal{O}_\beta (\text{odd})$) is an equivalence of categories onto $\mathcal{O}_\alpha$. Moreover, the functor 
+	\[
+		\Gamma\colon \mathcal{O}_\beta (\text{even}) \times \mathcal{O}_\beta (\text{odd}) \to \mathcal{O}_\beta
+	\]
+	given by $\Gamma(M, M') = M \oplus M'$ is an equivalence of categories.
+\end{theorem} 
+
+The functor $\pi'\colon \mathcal{O}_\beta \to \mathcal{O}_\alpha$ induces a two-to-one surjection $\pi': W_\beta \to W_\alpha$ such that for any $\pi' y = \pi' \widetilde{y}.$
+
+\subsection{Induction from lower rank}
+
+We define two standard parabolic subalgebras $\lie{q}_2 \leq \lie{q}_1$ which are not contained in $\lie{p}.$
+
+
+\medskip 
+\begin{center}
+\begin{tabular}{r|ccc}
+	$(\lie{g}, \lie{p})$ & $A_n, A_{p-1} \times A_{n-p}$ &  $C_n, A_{n-1}$ & $D_n, A_{n-1}$ \\ 
+	Simple roots in $\roots(u_1)$ & $\alpha_1$ & $\alpha_1$ & $\alpha_1$ \\
+	Simple roots in $\roots(u_2)$ & $\alpha_1, \alpha_n$ & $\alpha_1, \alpha_2$ & $\alpha_1, \alpha_2$ \\ 
+	$(\lie{g}, \lie{p})$ & $A_{n-2}, A_{p-2} \times A_{n-p-1}$ &  $C_{n-2}, A_{n-3}$ & $D_{n-2}, A_{n-3}$ \\ 
+\end{tabular}
+\end{center}
+
+\medskip
+
+\begin{gather*}
+\lie{q}_1 = \lie{l_1} \oplus \lie{u}_{1} \\
+\lie{q}_2 = \lie{g}' \oplus \lie{u}_{2} \\
+\lie{p}' = \lie{g}' \cap \lie{p} = \lie{l}' \oplus \lie{u}'
+\end{gather*}
+
+We can decompose the Weyl group $\lie{l} \cap \lie{l}_1$ into minimal representatives with respect to $\lie{l}'.$
+\[
+ W_{\lie{l}\cap\lie{l}_1} = {}^{\lie{l}'} W_{\lie{l}\cap\lie{l}_1} W_{\lie{l'}}
+\]
+Let $w_0$ be the longest element of $ {}^{\lie{l}'} W_{\lie{l}\cap\lie{l}_1}$ and let $r_0$ be the longest element of $W^\lie{g'}_\lie{l_1}.$
+
+\begin{proposition}
+	There is a covariant equivalence of categories $\Lambda$:
+	\[
+		\Lambda \colon \mathcal{O}(\lie{g}', \lie{p}', \rho(\lie{g}')) \to \mathcal{O}(\lie{g}, \lie{p}, \rho - \omega_1).
+	\]
+	For each $x \in W'^{\lie{l}'}$:
+	\[
+		\Lambda(L(\lie{g}', x\rho(\lie{g}'))) \simeq L(\lie{g}, w_0 x r_0 (\rho - \omega_1)). 
+	\]
+	Similar formulas hold for parabolic Verma modules and projective modules. Furthermore, $\Lambda$ preserves self-duality.
+\end{proposition}
+
+\noindent Sketch of proof:
+
+\[
+ \mathcal{O}(\lie{g}', \lie{p}', \rho(\lie{g}')) \simeq 
+\]
+
+\todo{finish this}
+
+\subsection{Kazhdan--Lusztig--Vogan polynomials}
+
+For $y, w$ from $W^\lie{l}$ define
+\[
+Q_{y, w} = \sum_{j\geq 0} q^j \dim \Ext^{l(w) - l(y) -2j} (N(w_\lie{l} y w_\lie{g}\rho), L(w_\lie{l} w w_\lie{g}\rho))
+\]
+
+\begin{lemma} For $y, w \in W^\lie{}$ and $r\in W_\lie{l}$
+	\[
+		Q_{y,w}  = P_{ry, w_\lie{l} w}
+	\]
+\end{lemma}
+	
+\begin{theorem}
+	Let $y,w \in W^\lie{l}.$
+	\begin{enumerate}
+		\item If $y$ is of maximal length in $W^\lie{l}$ then $Q_{y,w}$ equals $1$ or $0$ depending on whether $y=w$ or not.
+		\item Otherwise choose simple root $\beta$ wich $ys_\beta \in W_\beta$, i.e. $y\beta \in \roots(\lie{u})$. We then have two following cases:
+		\begin{enumerate}
+			\item Suppose that either $ws_\beta \notin W_\beta$ or $(\lie{g} = \lie{sp}$, $\beta$ is long and $y(\rho - \omega_\beta)$ and $w(\rho-\omega_\beta)$ have opposite parity. Then
+			\[
+				Q_{y,w} = Q_{ys_\beta, w}
+			\]
+			\item Suppose that $ws_\beta \in W_\beta$ and if $\lie{g} = \lie{sp}$ and $\beta$ long, then assume that  $y(\rho - \omega_\beta)$ and $w(\rho-\omega_\beta)$ have the same parity. Then
+			\[
+				Q_{y,w} = Q_{ys_\beta, w} + q^r Q'_{y', w'}
+			\]
+			with $2r = l(w) - l(y) - l'(w') + l'(y').$
+		\end{enumerate}
+	\end{enumerate}
+\end{theorem}
+
+
+\begin{thebibliography}{AHS}
+	\bibitem{es} T.~J. Enright and B.~Shelton.
+\newblock {\em {Categories of Highest Weight Modules: Applications to Classical
+  Hermitian Symmetric Pairs}}, volume 67 (367) of {\em Memoirs of the American
+  Mathematical Society}.
+\newblock American Mathematical Society, 1987.
+
+	\bibitem{ew} T.~J. Enright and N. R. Wallach.
+\newblock {Notes on homological algebra and representations of Lie algebras}, Duke Math. J. 47 (1980), no. 1, 1--15.
+
+	\bibitem{hum} J. E. Humphreys.
+\newblock {\em {Representations of Semisimple Lie Algebras in the BGG Category $\mathcal{O}$}}, volume 94 of {\em Graduate Studies in Mathematics}.
+\newblock American Mathematical Society, 2008.
+
+	\bibitem{irv} R.~S. Irving.
+\newblock {Projective Modules in the Category $\mathcal{O}_S$: Self-Duality.}, Transactions of the American Mathematical Society 291, no. 2 (1985): 701-732.
+
+
+	\bibitem{kv} A. W. Knapp and D. A. Vogan, Jr.
+\newblock {\em {Cohomological Induction and Unitary Representations}}.
+\newblock Princeton University Press, 1995.
+
+
+
+
+
+\end{thebibliography}
+
+
+
+\end{document}
